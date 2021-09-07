@@ -1,0 +1,31 @@
+{% if isAnime %}
+{% for x in results %}
+<div class = 'new-request-indv' id = 'newmal{{x.mal_id}}'onclick = "change_request('#' + 'newmal{{x.mal_id}}', {{forloop.counter}})">
+    <img src = {{x.image_url}}>
+    <div class = 'request-indv-words'>
+        <h3>{{x.title}}</h3>
+        <span>
+            <p>{{x.start_date}}</p>
+            <p>MAL ID: {{x.mal_id}}</p>
+        </span>
+    </div>
+</div>
+{% endfor %}
+
+
+</div>
+{% else %}
+{% for x in results %}
+<div class = 'new-request-indv' id = 'new{{x.imdbID}}'onclick = "change_request('#' + 'new{{x.imdbID}}', {{forloop.counter}})">
+    <img src = {{x.Poster}}>
+    <div class = 'request-indv-words'>
+        <h3>{{x.Title}}</h3>
+        <span>
+            <p>{{x.Year}}</p>
+            <p>IMDB ID: {{x.imdbID}}</p>
+        </span>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+

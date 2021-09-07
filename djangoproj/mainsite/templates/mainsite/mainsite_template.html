@@ -1,0 +1,168 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <title>
+            Kunflix
+        </title>
+        <link rel="stylesheet" href = "{% static 'mainsite/style.css' %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script id = 'main-script'>
+            var token = '{{csrf_token}}';
+            
+            function loadcontent(url, classname, notpop) {
+                
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        if (notpop) {
+                            window.history.pushState({wasloaded: true, classname:classname}, "Kunflix", url);
+                        }
+                        document.querySelector(classname).innerHTML = this.response['html'];
+                        if (this.response['script'] != null) {
+                            var newScript = document.createElement("script");
+                            newScript.src = this.response['script'];
+                            document.querySelector(classname).appendChild(newScript); 
+                        }
+                        
+                    }
+                };                
+                xhttp.open('GET', url, true);
+                xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhttp.responseType = 'json';
+                xhttp.send();
+                return false;
+            };
+
+            function search(searchdata) {
+                var xhttp = new XMLHttpRequest();
+                var searchresultbox = document.querySelector(".searchdown-content");
+                searchresultbox.style.display = 'flex';
+                let prevresults = document.getElementsByClassName('search-result');
+                let elementsno = prevresults.length;
+                if (elementsno != 0) {
+                    for (let i = 0; i < elementsno; i++) {
+                        prevresults[0].remove();
+                    }
+                }
+                document.querySelector('.no-results').style.display = 'none';
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(this.response.results);
+                        var result = this.response.results;
+                        
+                        if(result.length) {
+                            for (dict of result ) {
+                                {
+                                    let thepath = '{% url "title_noinput"%}' + '/' + dict.title + '_' + dict.year;
+                                    let maindiv = document.createElement('div');
+                                    maindiv.className += 'search-result';
+                                    maindiv.innerHTML = `<img src = ${dict.image}><span class = 'search-result-words'><h5>${dict.title}</h5><span><p>${dict.year}</p><p>Episodes: ${dict.episodes}</p></span></span>`;
+                                    maindiv.addEventListener('click', () => {
+                                        loadcontent(thepath , '.content', true);
+                                    });
+                                    searchresultbox.insertBefore(maindiv, document.querySelector('.no-results'));
+                                };
+                                
+                            }
+                        }
+                        else {
+                            document.querySelector('.no-results').style.display = 'flex';
+                        }
+                    }
+                };
+                xhttp.open('GET', "/api/showshort/?title=" + searchdata, true);
+                xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhttp.responseType = 'json';
+                xhttp.send();
+            };
+
+            window.addEventListener("popstate", function() {
+                    var currentstate = history.state;
+                    console.log(currentstate);
+                    if (currentstate != null) {
+                        if (currentstate.wasloaded === true) {
+                            loadcontent(location.href, currentstate.classname, false);
+                        }
+                    }
+                    else {
+                        window.location.reload();
+                    }
+                }
+            );
+
+            window.onload = () => {
+                var searchbox = document.querySelector('#search_text');
+                var mytimeout;
+                searchbox.addEventListener('keyup', (event) =>{
+                    clearTimeout(mytimeout);
+                    if (searchbox.value.length != 0 && event.keyCode !== 13) {
+                        mytimeout = setTimeout( () => {
+                            search(searchbox.value);
+                        }, 800);
+                    }
+                    else {
+                        document.querySelector('.searchdown-content').style.display = 'none';
+                    }  
+                });
+
+                searchbox.addEventListener('keydown', (event) => {
+                    if (event.keyCode === 13) {
+                        loadcontent('{%url "search_noinput"%}/' + searchbox.value, '.content', true);
+                    }
+                });
+
+                window.onclick = function(event) {
+                    if (!document.querySelector('.searchdown').contains(event.target)) {
+                        document.querySelector('.searchdown-content').style.display = 'none';
+                    }
+                };
+            };
+
+        </script>
+        
+
+    </head>
+    
+    <body>
+        <div class = 'header'>
+            <img src = "{% static 'mainsite/heroacademia.jpg' %}">
+            <div class = 'navbar'>
+                <div class = 'leftnav'>
+                    <a href = "{%url 'home_page'%}" onclick = "return loadcontent('{%url 'home_page'%}', '.content', true)" id = 'Home'>Home</a>
+                    <a href = "{%url 'about_page'%}" onclick = "return loadcontent('{%url 'about_page'%}', '.content', true)" id = 'About'>About</a>        
+                    <div class = "dropdown">
+                        <a href = "{%url 'shows_page'%}" onclick = "return loadcontent('{%url 'shows_page'%}', '.content', true)" id = 'Shows'>Shows</a>
+                            <span class = 'dropdown-content'>
+                                <a href = "{%url 'shows_page'%}/English" onclick = "return loadcontent('{%url 'shows_page'%}/English', '.content', true);" id = 'English'>English</a>
+                                <a href = "{%url 'shows_page'%}/Kdrama" onclick = "return loadcontent('{%url 'shows_page'%}/Kdrama', '.content', true)" id = 'Kdrama'>Kdrama</a>
+                                <a href = "{%url 'shows_page'%}/Anime" onclick = "return loadcontent('{%url 'shows_page'%}/Anime', '.content', true)" id = 'Anime'>Anime</a>
+                                <a href = "{%url 'shows_page'%}/Others" onclick = "return loadcontent('{%url 'shows_page'%}/Others', '.content', true)" id = 'Others'>Others</a>
+                            </span>
+                    </div>                         
+                    <a href = "{%url 'requests_page'%}" onclick = "return loadcontent('{%url 'requests_page'%}', '.content', true)" id = 'Requests'>Requests</a>
+                </div>
+                <div class = 'rightnav'>
+                    <div class = 'searchdown'>
+                        <input type="text" id = 'search_text' name = 'search_text' placeholder="Search..">
+                            <span class = 'searchdown-content'>
+                                <div class = 'no-results'>
+                                    <p>No Results Found!!!</p>
+                                </div>
+                            </span>
+                    </div>
+                    <a href = '{%url "logout_page"%}' id = 'Logout'>Logout</a>
+                </div>
+            </div>
+        </div>
+
+        <div class = 'content'>
+            {% block content %} {% endblock %}
+            {% block script%} {% endblock %}
+        </div>
+    
+    </body>
+
+</html>

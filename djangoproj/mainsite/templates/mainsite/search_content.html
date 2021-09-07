@@ -1,0 +1,50 @@
+{% if results %}
+
+<div>
+    <h3>Search Results</h3>
+</div>
+
+{% for result in results %}
+<a class = 'mainsearch-results' href = "{%url 'title_noinput'%}/{{result.title}}_{{result.year}}" onclick = "return loadcontent('{%url 'title_noinput'%}/{{result.title}}_{{result.year}}', '.content', true)">
+    <img class = 'mainsearch-poster' src = '/posters/{{result.image}}'>
+    <div class = 'mainsearch-words'>
+        <div>
+        <h3>{{result.title}}</h3>
+        <span class = 'mainsearch-info'>
+            <p>{{result.year}}</p> <p>{{result.category}}</p> <p>Episodes: {{result.episodes}}</p> <p>Updated: {{result.recentdate}}</p>
+        </span>
+        </div>
+        <div class = 'mainsearch-plot'>
+            <p>{{result.plot}}</p>
+        </div>
+    </div>
+</a>
+{% endfor %}
+{% if lastpage %} 
+<div>
+    <h3>This is the last page.</h3>
+</div>
+{% endif %}
+
+<div class = 'paginationdiv'>
+    <span class = 'pagination'>
+        {% if not firstpage%}
+        <a href = '{%url "search_noinput"%}/{{inputq}}/{{prevpage}}' onclick = "return loadcontent('{%url "search_noinput"%}/{{inputq}}/{{prevpage}}', '.content', true)">
+        <button class = 'pagination-button'>Prev</button>
+        </a>
+        {% endif %}
+        <p>{{page}}</p>
+        {% if not lastpage %}
+        <a href = '{%url "search_noinput"%}/{{inputq}}/{{nextpage}}' onclick = "return loadcontent('{%url "search_noinput"%}/{{inputq}}/{{nextpage}}', '.content', true)">
+        <button class = 'pagination-button'>Next</button>
+        </a>
+        {% endif %}
+    </span>
+</div>
+
+
+{% else %}
+<div class = 'mainsearch-noresults'>
+    <h1>No Results!!!</h1>
+</div>
+{% endif %}

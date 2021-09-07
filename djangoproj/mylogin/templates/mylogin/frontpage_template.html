@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <title>
+            Frontpage
+        </title>
+        <link rel="stylesheet" href = "{% static 'mylogin/style.css' %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {%block script %} {% endblock%}
+        
+
+    </head>
+    
+    <body>
+        <div class = "front">
+            <h3></h3>
+            
+            <div class = "frontnav">
+                {% block head %} {% endblock %}
+            </div>
+            {% block content %} {% endblock %}
+        </div>
+    </body>
+
+</html>

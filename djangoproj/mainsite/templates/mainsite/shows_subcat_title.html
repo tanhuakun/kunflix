@@ -1,0 +1,11 @@
+<div class = 'shows-box-wrapper'>
+    <h2>All {{subcat}}</h2>
+    <div class = 'subcat-all-shows'>
+        {% for result in shows%}
+        <a href = "{%url 'title_noinput'%}/{{result.title}}_{{result.year}}" class = 'individual-shows' onclick = "return loadcontent('{%url 'title_noinput'%}/{{result.title}}_{{result.year}}', '.content', true)">
+            <img src = '/posters/{{result.image}}'>
+            <p>{{result.title}}</p>
+        </a>
+        {% endfor %}
+    </div>
+</div>

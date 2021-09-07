@@ -1,0 +1,27 @@
+{% extends 'mainsite/mainsite_template.html' %}
+
+
+{%block title %} {% endblock %}
+
+{%block script %} {% endblock%}
+
+{% block content %}
+
+<div class = 'upload-wrapper'>
+    
+    <form action="/approve" method="post"> {% csrf_token %}
+    
+    <select name = 'application_choice' id = 'application_choice'>
+        <option value = 'None'>Select Application:</option>
+        {% for x in applications %}
+        <option value = {{x.id}}>{{x.name}} - {{x.email}}</option>
+        {% endfor%}
+    </select> <br> <br>
+
+    <label for='airing'>Approve?</label><br>
+    <input type ='checkbox' name = 'Approved' value=True><br>
+    <input type = 'submit' name = 'action' value = 'approve'>
+    </form>
+
+
+{% endblock %}

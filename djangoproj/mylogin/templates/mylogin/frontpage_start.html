@@ -1,0 +1,16 @@
+{% extends 'mylogin/frontpage_template.html' %}
+
+{% block script %}
+{% endblock %}
+
+{% block head %}
+<div class = "currentlink"><a href="{% url 'start' %}">Home</a></div>
+<a href="{% url 'login' %}">Login</a>
+<a href="{% url 'register' %}">Register</a>
+<a href="{% url 'apply'%}">Apply</a> 
+{% endblock %}
+
+
+{% block content %}
+<p>With great power comes great responsibility&nbsp&nbsp&nbsp<br>- a wise man</p>  
+{% endblock %}

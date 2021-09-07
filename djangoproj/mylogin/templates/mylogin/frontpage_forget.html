@@ -1,0 +1,25 @@
+{% extends 'mylogin/frontpage_template.html' %}
+{% block head %}
+<a href="{% url 'start' %}">Home</a>
+<a href="{% url 'login' %}">Login</a>
+<a href="{% url 'register' %}">Register</a>
+<a href="{% url 'apply'%}">Apply</a> 
+{% endblock %}
+
+
+{% block content %}
+<div class = "loginform">
+<form id = 'forgetform' action="{% url 'forget' %}" method = 'POST'> {% csrf_token %}
+    <label for="Username" autofocus >Username</label><br>
+    <input type="text" id = "Username" name = "Username" placeholder='Your username'><br>
+    <label for="Password">Password</label><br>
+    <input type="text" id = "Email" name = "Email" placeholder='example@email.com'><br>
+    <button id = "Register" type = 'submit'>Reset</button>
+</form>
+</div>
+
+
+<p class = 'advisory'>Enter your username and email to reset your password.</p>
+
+
+{% endblock %}

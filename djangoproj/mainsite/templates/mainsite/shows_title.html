@@ -1,0 +1,60 @@
+    <div class = 'shows-box-wrapper'>
+        <h2>Recent English</h2>
+        <div class = 'shows-box scroll'>
+            {% for result in english %}
+            <a href = "{%url 'title_noinput'%}/{{result.title}}_{{result.year}}" class = 'individual-shows' onclick = "if(check_scroll) {return loadcontent('{%url 'title_noinput'%}/{{result.title}}_{{result.year}}', '.content', true)}">
+                <img src = '/posters/{{result.image}}'>
+                <p>{{result.title}}</p>
+                <div class = 'title-dropdown'>
+                        <p>{{result.year}}&nbsp&nbsp Episodes: {{result.episodes}} &nbsp&nbspUpdated: {{result.recentdate}}</p>
+                    <p>Plot: {{result.plot}}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class = 'shows-box-wrapper'>
+        <h2>Recent Kdrama</h2>
+        <div class = 'shows-box scroll'>
+            {% for result in kdrama %}
+            <a href = "{%url 'title_noinput'%}/{{result.title}}_{{result.year}}" class = 'individual-shows' onclick = "if(check_scroll) {return loadcontent('{%url 'title_noinput'%}/{{result.title}}_{{result.year}}', '.content', true)}">
+                <img src = '/posters/{{result.image}}'>
+                <p>{{result.title}}</p>
+                <div class = 'title-dropdown'>
+                        <p>{{result.year}}&nbsp&nbsp Episodes: {{result.episodes}} &nbsp&nbspUpdated: {{result.recentdate}}</p>
+                    <p>Plot: {{result.plot}}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class = 'shows-box-wrapper'>
+        <h2>Recent Anime</h2>
+        <div class = 'shows-box scroll'>
+            {% for result in anime %}
+            <a href = "{%url 'title_noinput'%}/{{result.title}}_{{result.year}}" class = 'individual-shows' onclick = "if(check_scroll) {return loadcontent('{%url 'title_noinput'%}/{{result.title}}_{{result.year}}', '.content', true)}">
+                <img src = '/posters/{{result.image}}'>
+                <p>{{result.title}}</p>
+                <div class = 'title-dropdown'>
+                        <p>{{result.year}}&nbsp&nbsp Episodes: {{result.episodes}} &nbsp&nbspUpdated: {{result.recentdate}}</p>
+                    <p>Plot: {{result.plot}}</p>
+                </div>
+            </a>
+        {% endfor %}
+        </div>
+    </div>
+    <div class = 'shows-box-wrapper'>
+        <h2>Recent Others</h2>
+        <div class = 'shows-box scroll'>
+            {% for result in others %}
+            <a href = "{%url 'title_noinput'%}/{{result.title}}_{{result.year}}" class = 'individual-shows' onclick = "if(check_scroll) {return loadcontent('{%url 'title_noinput'%}/{{result.title}}_{{result.year}}', '.content', true)}">
+                <img src = '/posters/{{result.image}}'>
+                <p>{{result.title}}</p>
+                <div class = 'title-dropdown'>
+                        <p>{{result.year}}&nbsp&nbsp Episodes: {{result.episodes}} &nbsp&nbspUpdated: {{result.recentdate}}</p>
+                    <p>Plot: {{result.plot}}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>

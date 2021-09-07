@@ -1,0 +1,19 @@
+<div class = 'shows-navbar'>
+    <h2>Quick Links</h2>
+    <h3>Recent Airing</h3>
+    {% if airing %}
+    {% for result in airing%}
+    <p>
+    <a href = "{%url 'title_noinput'%}/{{result.title}}_{{result.year}}/{{result.episodes}}" class = 'navbar-link' onclick = "return loadcontent('{%url 'title_noinput'%}/{{result.title}}_{{result.year}}/{{result.episodes}}', '.content', true)">{{result.title}} Episode {{result.episodes}}</a>
+    </p>
+    {% endfor %}
+    {% else %}
+    <p>No airing shows were picked up!</p>
+    {% endif %}
+    <h3>Recent Completed</h3>
+    {% for result in completed%}
+    <p>
+    <a href = "{%url 'title_noinput'%}/{{result.title}}_{{result.year}}" class = 'navbar-link' onclick = "return loadcontent('{%url 'title_noinput'%}/{{result.title}}_{{result.year}}', '.content', true)">{{result.title}}, {{result.episodes}} Episodes</a>
+    </p>
+    {% endfor %}
+</div>

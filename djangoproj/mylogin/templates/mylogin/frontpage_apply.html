@@ -1,0 +1,68 @@
+{% extends 'mylogin/frontpage_template.html' %}
+
+{% block script %}
+<script>
+
+function senddata() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        console.log(this.status);
+        if (this.readyState == 4 && this.status == 403) {
+            console.log('test');
+            var temp = this.response;
+            document.getElementsByClassName('error')[0].innerHTML = temp;            
+        }
+        else if (this.readyState == 4 && this.status == 200) {
+            console.log(this.response);
+            window.location = this.response;
+        }
+    };
+
+    var formData = new FormData(document.getElementById('applyform'));
+
+    xhttp.open('POST', "{% url 'check_apply'%}", true);
+    xhttp.send(formData);
+}
+
+window.addEventListener('load', function() {
+    const form = document.getElementById("Apply");
+    form.addEventListener("click", senddata);
+
+    const input = document.getElementsByTagName("input");
+    for (x=0; x < input.length; x++) {
+        input[x].addEventListener('keyup', (event) => {
+            if (event.keyCode === 13) {
+                document.getElementById('Apply').click();
+            }
+        } );
+    }
+});
+</script>
+{% endblock %}
+
+
+
+{% block head %}
+<a href="{% url 'start' %}">Home</a>
+<a href="{% url 'login' %}">Login</a> 
+<a href="{% url 'register' %}">Register</a>
+<a class = "currentlink" href="{% url 'apply'%}">Apply</a> 
+{% endblock %}
+
+
+
+{% block content %}
+<div class = "loginform">
+<form id = 'applyform'>{% csrf_token %}
+    <label for="Name" autofocus>Nickname</label><br>
+    <input type="text" id = "Name" name = "Name" placeholder='No Real Names'><br>
+    <label for="Email">Email</label><br>
+    <input type="text" id = "Email" name = "Email"placeholder ='example@email.com'><br>
+    <button id = "Apply" type = "button" >Apply</button>
+</form>
+</div>
+
+
+<p class = 'error'></p>
+
+{% endblock %}

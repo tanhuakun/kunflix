@@ -1,0 +1,71 @@
+{% extends 'mylogin/frontpage_template.html' %}
+
+{% block script %}
+<script>
+
+    function senddata() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            console.log(this.status);
+            if (this.readyState == 4 && this.status == 403) {
+                console.log('test');
+                var temp = this.response;
+                document.getElementsByClassName('error')[0].innerHTML = temp;            
+            }
+            else if (this.readyState == 4 && this.status == 200) {
+                console.log(this.response);
+                window.location = this.response;
+            }
+        };
+    
+        var formData = new FormData(document.getElementById('registerform'));
+    
+        xhttp.open('POST', "{% url 'check_register'%}", true);
+        xhttp.send(formData);
+    }
+    
+    window.addEventListener('load', function() {
+        const form = document.getElementById("Register");
+        form.addEventListener("click", senddata);
+    
+        const input = document.getElementsByTagName("input");
+        for (x=0; x < input.length; x++) {
+            input[x].addEventListener('keyup', (event) => {
+                if (event.keyCode === 13) {
+                    document.getElementById('Register').click();
+                }
+            } );
+        }
+    });
+    </script>
+{% endblock %}
+
+
+{% block head %}
+<a href="{% url 'start' %}">Home</a>
+<a href="{% url 'login' %}">Login</a>
+<div class = "currentlink"> <a href="{% url 'register' %}">Register</a> </div>
+<a href="{% url 'apply'%}">Apply</a> 
+{% endblock %}
+
+
+{% block content %}
+<div class = "loginform" id = 'regform'>
+<form id = 'registerform'> {% csrf_token %}
+    <label for="Username" autofocus >Username</label><br>
+    <input type="text" id = "Username" name = "Username" placeholder='More than 3 characters'><br>
+    <label for="Password">Password</label><br>
+    <input type="password" id = "Password" name = "Password" placeholder='More than 3 characters'><br>
+    <label for="Password2">Re-type Password</label><br>
+    <input type="password" id = "Password2" name = "Password2" placeholder='Re-type'><br>
+    <label for="InvCode">Invite Code</label><br>
+    <input type="text" id = "InvCode" name = "InvCode"><br>
+    <button id = "Register" type = 'button'>Register</button>
+</form>
+</div>
+
+
+<p class = 'error'></p>
+
+
+{% endblock %}

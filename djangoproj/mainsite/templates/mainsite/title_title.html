@@ -1,0 +1,22 @@
+<div class = 'title-main'>
+    <div class = 'title-head'>
+        <img src = '/posters/{{results.image}}'>
+        <div>
+            <h2>{{results.title}}</h2>
+            <p>{{results.plot}}</p>
+            <p>First Released: {{results.year}}</p>
+            <p>Episodes Uploaded: {{results.episodes}}</p>
+            <p>Category: {{results.category}}</p>
+            <p>{% if results.airing%}Currently Airing{% else %}Completed Series{% endif %}</p>
+        </div>
+    </div>
+    <div class = 'title-episodes'>
+        {% for input in thumbnails %}
+        
+        <a href = "{%url 'title_noinput'%}/{{results.title}}_{{results.year}}/{{forloop.counter}}" onclick = "return loadcontent('{%url 'title_noinput'%}/{{results.title}}_{{results.year}}/{{forloop.counter}}', '.content', true)" class = 'individual-episodes'>
+            <img src = "/thumbnails/{{results.path}}/{{input}}">
+            <p>Episode {{forloop.counter}}</p>
+        </a>
+        {% endfor %}
+    </div>
+</div>

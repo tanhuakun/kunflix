@@ -1,0 +1,69 @@
+{% extends 'mylogin/frontpage_template.html' %}
+
+{% block script %}
+<script>
+
+function senddata() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        console.log(this.status);
+        if (this.readyState == 4 && this.status == 403) {
+            console.log(this.response);
+            var temp = this.response;
+            document.getElementsByClassName('error')[0].innerHTML = temp;
+            document.querySelector('#forget').style.display = 'block';            
+        }
+        else if (this.readyState == 4 && this.status == 200) {
+            console.log(this.response);
+            window.location = this.response;
+        }
+    };
+
+    var formData = new FormData(document.getElementById('formlogin'));
+
+    xhttp.open('POST', "{% url 'check_login'%}", true);
+    xhttp.send(formData);
+}
+
+window.addEventListener('load', function() {
+    const form = document.getElementById("Login");
+    form.addEventListener("click", senddata);
+
+    const input = document.getElementsByTagName("input");
+    for (x=0; x < input.length; x++) {
+        input[x].addEventListener('keyup', (event) => {
+            if (event.keyCode === 13) {
+                document.getElementById('Login').click();
+            }
+        } );
+    }
+});
+</script>
+{% endblock %}
+
+
+
+{% block head %}
+<a href="{% url 'start' %}">Home</a>
+<div class = "currentlink"><a href="{% url 'login' %}">Login</a> </div>
+<a href="{% url 'register' %}">Register</a>
+<a href="{% url 'apply'%}">Apply</a> 
+{% endblock %}
+
+
+
+{% block content %}
+<div class = "loginform">
+<form id = 'formlogin'>{% csrf_token %}
+    <label for="Username" autofocus>Username</label><br>
+    <input type="text" id = "Username" name = "Username"><br>
+    <label for="Password">Password</label><br>
+    <input type="password" id = "Password" name = "Password"><br>
+    <button id = "Login" type = "button">Login</button>
+</form>
+</div>
+
+<a href="{% url 'forget'%}" id = 'forget'>Forgot your password?</a>
+<p class = 'error'></p>
+
+{% endblock %}

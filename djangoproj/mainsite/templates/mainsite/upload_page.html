@@ -1,0 +1,65 @@
+{% extends 'mainsite/mainsite_template.html' %}
+
+
+
+{%block script %} {% endblock%}
+
+{% block content %}
+
+<div class = 'upload-wrapper'>
+    
+    <form action="/upload" method="post"> {% csrf_token %}
+    
+    <select name = 'request_choice' id = 'request_choice'>
+        <option value = 'None'>Select Request:</option>
+        {% for req in requests %}
+        <option value = {{req.id}}>{{req.title}}</option>
+        {% endfor%}
+    </select>
+
+
+    <select name = 'show_choice' id = 'show_choice'>
+        <option value = 'None'>Select Show:</option>
+        <option value = 'Reject'>Reject Request?</option>
+        {% for show in shows%}
+        <option value = {{show.id}}>{{show.title}}</option>
+        {% endfor %}
+    </select>
+
+    <input type = 'submit' name = 'action' value = 'NextStep'>
+
+    </form>
+
+
+
+{% if secondstep%}
+
+<form action = '/upload' method = "post"> {% csrf_token %}
+    <label for="reqid" >Request ID</label><br>
+    <input type="text" id = "reqid" name = "reqid" value = {{request.id}}><br>
+    <label for='showid'>Show ID</label><br>
+    <input type='text' id = "showid" name = 'showid' value = {{show.id}}><br>
+    <label for="title">Title</label><br>
+    <input type='text' id = "title" name = "title" value = '{{show.title}}'><br>
+    <label for="plot">Plot</label><br>
+    <textarea id= "plot" name = "plot" maxlength=400 rows='6' cols="100">{{request.plot}}</textarea><br>
+    <label for='year'>Year</label><br>
+    <input type='text' id = 'year' name = 'year'><br>
+    <label for='category'>Category</label><br>
+    <select name ='category' id = 'category'>
+        <option value = 'None'>Select Category</option>
+        <option value = 'English'>English</option>
+        <option value = 'Kdrama'>Kdrama</option>
+        <option value = 'Anime'>Anime</option>
+        <option value = 'Others'>Others</option>
+    </select><br>
+    <label for='airing'>Airing?</label><br>
+    <input type ='checkbox' name = 'airing' value=True><br>
+
+    <input type = 'submit' name = 'action' value = 'Finally'>
+
+</form>
+
+{% endif %}
+</div>
+{% endblock %}

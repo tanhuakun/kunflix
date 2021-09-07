@@ -1,0 +1,47 @@
+{% if results %}
+
+{% for result in results%}
+
+<div class = 'requests-list'>
+<img src = /posters/{{result.image}}>
+    <span>
+        <h3>{{result.title}}</h3>
+        <p>{{result.plot}}</p>
+        <p>Requested by {{result.requser.username}} on {{result.reqdate}}</p>
+        {% if result.isfilled%}
+        <p style = 'color: blue;'>This request has been fulfilled, please search for the show!</p>
+        {% elif result.isrejected%}
+        <p style = 'color: red;'>This request has been rejected, it will not be uploaded</p>
+        {% endif %}
+        <span class = 'request-vote' id = {{result.webid}}>
+            <p>{% if result.isuser %}<span class = 'delete-request' onclick = "delete_request(this)">Delete request</span> &nbsp{%endif%}Number of votes: <span id = 'votenum'>{{result.numvotes}}</span></p><h1 onclick = "toggle_vote(this)" {% if result.isuser%}class = 'voted'{%endif%}></h1>
+        </span>
+    </span>
+</div>
+
+{% endfor %}
+{% if lastpage %} 
+<div>
+    <h3>This is the last page.</h3>
+</div>
+{% endif %}
+
+<div class = 'paginationdiv' id = 'request_pagination'>
+    <span class = 'pagination'>
+        {% if not firstpage%}
+        <button onclick = "search_requests({{page}}-1)" class = 'pagination-button'>Prev</button>
+        {% endif %}
+        <p>{{page}}</p>
+        {% if not lastpage %}
+        <button onclick = "search_requests({{page}}+1)" class = 'pagination-button'>Next</button>
+        {% endif %}
+    </span>
+</div>
+
+{% else %}
+
+<div class = 'mainsearch-noresults'>
+    <h1>No Results!!!</h1>
+</div>
+
+{% endif %}

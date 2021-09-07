@@ -1,0 +1,26 @@
+<div class = 'mainbody'>
+    <div class = 'homebox'>
+        <h2>Welcome!</h2>
+        <p>This is a streaming site made by Hua Kun. If it is your first time on this site, I highly recommend that you read <a href="{%url 'about_page'%}" onclick="return loadcontent('{%url 'about_page'%}', '.content', true)" id = 'home-about'>this page</a>.</p>
+        <p>Otherwise, you can find shows to watch by searching or clicking on the "shows" tab.</p>
+        <p>You can also request shows on the "requests" tab, however I may not upload every request.</p>
+        <p>Be sure to report any bugs or issues you find along the way!</p>
+        <p>Happy streaming :)</p>
+        
+    </div>
+    <div class = 'homebox'>
+        <h2>Recent Uploads</h2>
+        <div class = 'home-uploads'>
+            {% for result in results%}
+            <a href = "{%url 'title_noinput'%}/{{result.title}}_{{result.year}}" onclick = "return loadcontent('{%url 'title_noinput'%}/{{result.title}}_{{result.year}}', '.content', true)">
+            <div class = 'individual-shows'>
+                <img src = '/posters/{{result.image}}'>
+                <p>{{result.title}}</p>
+            </div>
+            </a>
+            
+            {% endfor %}
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,38 @@
+{% extends 'mylogin/frontpage_template.html' %}
+{% block head %}
+<a href="{% url 'start' %}">Home</a>
+<a href="{% url 'login' %}">Login</a>
+<a href="{% url 'register' %}">Register</a>
+<a href="{% url 'apply'%}">Apply</a> 
+{% endblock %}
+
+
+{% block content %}
+<div class = "loginform">
+<form id = 'forgetform' action="{{location}}" method = 'POST'> {% csrf_token %}
+    <label for="Password1" autofocus >Password</label><br>
+    <input type="password" id = "Password1" name = "Password1" placeholder='More than 3 characters'><br>
+    <label for="Password2">Re-type Password</label><br>
+    <input type="password" id = "Password2" name = "Password2" placeholder='Re-type'><br>
+    <button id = 'submitbutton' type = 'button'>Reset</button>
+</form>
+</div>
+
+
+<p class = 'error'></p>
+
+<script>
+window.onload = () => {
+    document.querySelector('#Password2').addEventListener('keyup', () => {
+        if (document.querySelector('#Password1').value != document.querySelector('#Password2').value) {
+            document.querySelector('.error').innerHTML = 'Please make sure the passwords match.'
+            document.querySelector('#submitbutton').type = 'button';
+        }
+        else if (document.querySelector('#Password2').value.length > 3) {
+            document.querySelector('.error').innerHTML = '';
+            document.querySelector('#submitbutton').type = 'submit';
+        }
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'mylogin/frontpage_template.html' %}
+
+{% block script %}
+{% endblock %}
+
+{% block head %}
+<a href="{% url 'start' %}">Home</a>
+<a href="{% url 'login' %}">Login</a>
+<a href="{% url 'register' %}">Register</a>
+<a href="{% url 'apply'%}">Apply</a> 
+{% endblock %}
+
+
+{% block content %}
+<p style="text-align-last:center;">If the email matches the username,<br>you will receive an email to reset your password.<br>Please be sure to check the spam folder.</p>  
+{% endblock %}

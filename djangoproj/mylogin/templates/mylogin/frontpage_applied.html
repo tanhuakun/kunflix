@@ -1,0 +1,14 @@
+{% extends 'mylogin/frontpage_template.html' %}
+
+
+{% block head %}
+<a href="{% url 'start' %}">Home</a>
+<a href="{% url 'login' %}">Login</a> 
+<a href="{% url 'register' %}">Register</a>
+<a class = "currentlink" href="{% url 'apply'%}">Apply</a> 
+{% endblock %}
+
+
+{% block content %}
+<p class = 'applied'>You have successfully applied! Please wait for it to be approved.<br>You can check your email spam folder after it is approved.</p>  
+{% endblock %}

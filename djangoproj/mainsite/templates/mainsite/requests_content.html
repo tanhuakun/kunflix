@@ -1,0 +1,95 @@
+{% load static %}
+
+<div class = 'request-main'>
+    <div class = 'request-switcher'>
+        <p onclick = "hide_and_show('.new-requests', '.all-requests')">Current Requests</p>
+        <p onclick = "hide_and_show('.all-requests', '.new-requests')">&nbsp&nbsp New Request &nbsp&nbsp</p>
+    </div>
+    <div class = 'requests-wrapper'>
+        <div class = 'all-requests'>
+            <div class = 'requests-input'>
+                <input type='text' id= 'search-requests' placeholder="Filter requests, empty search will list all" onkeydown = "if(event.keyCode === 13) {pre_search(1);}">
+                <button onclick = "pre_search(1);">Search</button>
+            </div>
+            <div class = 'request-options'>
+                <div class = 'option-box'>
+                    <select id = 'SelectRequestType'>
+                        <option value = 'Pending'>Pending Only</option>
+                        <option value = 'All'>All Requests</option>
+                        <option value = 'Fulfilled'>Fulfilled Only</option>
+                        <option value = 'Rejected'>Rejected Only</option>
+                    </select>
+                </div>
+                <div>
+                    <p id = 'search-request-p'>Select Request Status</p>
+                </div>
+            </div>
+            <div class = 'the-requests'>
+                {% for result in results%}
+                <div class = 'requests-list'>
+                <img src = /posters/{{result.image}}>
+                    <span>
+                        <h3>{{result.title}}</h3>
+                        <p>{{result.plot}}</p>
+                        <p>Requested by {{result.requser.username}} on {{result.reqdate}}</p>
+                        {% if result.isfilled%}
+                        <p style = 'color: blue;'>This request has been fulfilled, please search for the show!</p>
+                        {% elif result.isrejected%}
+                        <p style = 'color: red;'>This request has been rejected, it will not be uploaded</p>
+                        {% endif %}
+                        <span class = 'request-vote' id = {{result.webid}}>
+                            <p>{% if result.isuser %}<span class = 'delete-request' onclick = "delete_request(this)">Delete request</span> &nbsp{%endif%}Number of votes: <span id = 'votenum'>{{result.numvotes}}</span></p><h1 onclick = "toggle_vote(this)" {% if result.isuser%}class = 'voted'{%endif%}></h1>
+                        </span>
+                    </span>
+                </div>
+
+                {% endfor %}
+                {% if lastpage %} 
+                <div>
+                    <h3>This is the last page.</h3>
+                </div>
+                {% endif %}
+
+                <div class = 'paginationdiv' id = 'request_pagination'>
+                    <span class = 'pagination'>
+                        {% if not firstpage%}
+                        <button onclick = "search_requests({{page}}-1)" class = 'pagination-button'>Prev</button>
+                        {% endif %}
+                        <p>{{page}}</p>
+                        {% if not lastpage %}
+                        <button onclick = "search_requests({{page}}+1)" class = 'pagination-button'>Next</button>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class = 'new-requests'>
+            <div class = 'requests-input'>
+            <input type='text' id = 'request-search' placeholder="Search for the show... Enter" onkeydown = "if(event.keyCode === 13) {get_requests();}">
+                <button onclick = "get_requests();">Search</button>
+            </div>
+            <div class = 'request-options'>
+                <div class = 'option-box'>
+                <select id = 'SelectShowType'>
+                    <option value = 'None'>Select Type:</option>
+                    <option value = 'Normal'>Normal Show</option>
+                    <option value = 'Anime'>Anime</option>
+                </select>
+                <p id = 'select-type'>Please select type</p>
+                </div>
+                <div>
+                <p>The type is for choosing which website to search. "Normal" searches IMDB, while "Anime" searches MyAnimeList. Use the name of the shows found on those websites respectively.</p>
+                </div>
+            </div>
+            <div class = 'request-results'>
+            </div>
+            <div class = 'post-request'>
+                <form id = 'csrf_form'>{% csrf_token %}
+                </form>
+                <button onclick = "make_request()">Request Selected!</button>
+            </div>
+            <p id = 'request-error'></p>
+        </div>
+    </div>
+</div>
+
